@@ -6,28 +6,39 @@
 
 // @lc code=start
 /**
- * @param {number[][]} ivls
- * @param {number[]} ivl
+ * @param {number[][]} intervals
+ * @param {number[]} newInterval
  * @return {number[][]}
  */
-var insert = function (ivls, ivl) {
-  let ans = [];
-  let index = 0;
-  // 先遍历左侧，入队
-  while (index < ivls.length && ivl[0] > ivls[index][1]) {
-    ans.push(ivls[index++]);
-  }
-  // 处理重叠，直接在ivl上修改
-  while (index < ivls.length && ivls[index][0] <= ivl[1]) {
-    ivl[0] = Math.min(ivl[0], ivls[index][0]);
-    ivl[1] = Math.max(ivl[1], ivls[index][1]);
-    index++;
-  }
-  ans.push(ivl);
-  // 右侧剩余
-  while (index < ivls.length) {
-    ans.push(ivls[index++]);
-  }
-  return ans;
+var insert = function(intervals, newInterval) {
+	// 分三块处理
+	// 左侧小于插入区间
+	// 中间存在重叠区域
+	// 右侧大于插入区间
+	let ans = [];
+	let index = 0;
+	while (index < intervals.length) {
+		if (intervals[index][1] < newInterval[0]) {
+			ans.push(intervals[index++]);
+		} else {
+			break;
+		}
+	}
+	// 中间重叠区域
+	while (index < intervals.length) {
+		if (newInterval[1] >= intervals[index][0]) {
+			newInterval[0] = Math.min(newInterval[0], intervals[index][0]);
+			newInterval[1] = Math.max(newInterval[1], intervals[index][1]);
+			index++;
+		} else {
+			break;
+		}
+	}
+	ans.push(newInterval);
+	while (index < intervals.length) {
+		ans.push(intervals[index++]);
+	}
+	return ans;
 };
 // @lc code=end
+
