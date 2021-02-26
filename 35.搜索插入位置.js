@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=33 lang=javascript
+ * @lc app=leetcode.cn id=35 lang=javascript
  *
- * [33] 搜索旋转排序数组
+ * [35] 搜索插入位置
  */
 
 // @lc code=start
@@ -10,7 +10,7 @@
  * @param {number} target
  * @return {number}
  */
-var search = function(nums, target) {
+var searchInsert = function(nums, target) {
 
 };
 // @lc code=end
