@@ -9,80 +9,46 @@
                 this.val = val === undefined ? 0 : val;
                 this.next = next === undefined ? null : next;
             }
+            function TreeNode(val, left, right) {
+                this.val = val === undefined ? 0 : val;
+                this.left = left === undefined ? null : left;
+                this.right = right === undefined ? null : right;
+            }
         </script>
         <script>
-            var getPermutation = function (n, k) {
+            var levels = function (root) {
                 let ans = [];
-				let sums = [1];
-				let used = new Array(n).fill(0).map((v, i) => i + 1);
-                for (let i = 2; i < n; i++) {
-                    sums.push(sums[i - 2] * i);
+                let level = -1;
+                let nodes = [root];
+                while (nodes.length) {
+                    // 层
+                    if (!ans[++level]) {
+                        ans[level] = [];
+                    }
+                    // 节点数
+                    let size = nodes.length;
+                    // 遍历层
+                    for (let i = 0; i < size; i++) {
+                        let node = nodes.shift();
+                        ans[level].push(node.val);
+                        if (node.left) nodes.push(node.left);
+                        if (node.right) nodes.push(node.right);
+                    }
                 }
-                // 遍历
-                for (let i = 1; i <= n; i++) {
-                    // 取位
-                    let t = 1;
-                    // 按位比较
-                    let j = sums.length - i;
-                    if (k >= sums[j]) {
-                        // 该位有效
-                        // 若恰好相等, 表明是最后一个, 否则需要进一
-                        t = Math.floor(k / sums[j]) + (k % sums[j] === 0 ? 0 : 1);
-                        k = k % sums[j];
-					}
-					// 取used
-					for (let k = 0, s = 0; k < n; k++) {
-						if (used[k]) {
-							if (++s === t) {
-                    			// 放入数组
-								ans.push(used[k]);
-								used[k] = false;
-								break;
-							}
-						}
-					}
-                }
-                return ans.join('');
+                return ans;
             };
-            function backtrack(n, k) {
-                let ans = [];
-                recur(ans, n, k, 1, []);
-                return ans[k - 1];
-
-                // 辅助方法
-                function recur(ans, n, k, i, stack) {
-                    // 完成
-                    if (i - 1 === n) {
-                        return ans.push(stack.join(''));
-                    }
-                    // 超过
-                    if (i > n || ans.length >= k) return;
-                    // 递归
-                    for (let j = 1; j <= n; j++) {
-                        if (!stack.includes(j)) {
-                            stack.push(j);
-                            recur(ans, n, k, i + 1, stack);
-                            stack.pop();
-                        }
-                    }
-                }
-            }
         </script>
         <script>
             let l1 = new ListNode(9, new ListNode(9, new ListNode(9)));
             let l2 = new ListNode(9);
+            let t1 = new TreeNode(
+                1,
+                new TreeNode(2, null, new TreeNode(5)),
+                new TreeNode(3, new TreeNode(4))
+            );
         </script>
         <script>
-            // console.log(getPermutation(3, 1));
-            // console.log(getPermutation(3, 3));
-            console.log(backtrack(3, 2));
-            console.log(getPermutation(3, 2));
-            console.log(backtrack(3, 6));
-            console.log(getPermutation(3, 6));
-            console.log(backtrack(6, 100));
-            console.log(getPermutation(6, 100));
-            console.log(backtrack(8, 100));
-            console.log(getPermutation(8, 100));
+            console.log(levels(t1));
         </script>
     </body>
 </html>
