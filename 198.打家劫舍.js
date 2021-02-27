@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=53 lang=javascript
+ * @lc app=leetcode.cn id=198 lang=javascript
  *
- * [53] 最大子序和
+ * [198] 打家劫舍
  */
 
 // @lc code=start
@@ -9,7 +9,7 @@
  * @param {number[]} nums
  * @return {number}
  */
-var maxSubArray = function(nums) {
+var rob = function(nums) {
 
 };
 // @lc code=end
