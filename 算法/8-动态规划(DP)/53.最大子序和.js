@@ -29,14 +29,14 @@ var maxSubArray = function (nums) {
   }
   // 辅助方法-动态规划
   function dp(nums) {
-    // 状态方程：f(i) = max{f(i-1)+nums[i], nums[i]}
+    // 要求子序连续
+    // 状态方程：f(i) = max(nums[i], f(i-1) + nums[i])
     let ans = nums[0];
     let pre = nums[0];
     for (let i = 1; i < nums.length; i++) {
-      // 由于dps[i]只与dps[i-1]相关
-      // 故可以只用一个变量存储dps[i-1]
-      pre = Math.max(pre + nums[i], nums[i]);
-      ans = Math.max(ans, pre);
+      let tmp = ans;
+      ans = Math.max(nums[i], nums[i] + pre);
+      pre = tmp;
     }
     return ans;
   }

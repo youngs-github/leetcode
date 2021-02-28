@@ -1,54 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-    </head>
-    <body>
-        <script>
-            function ListNode(val, next) {
-                this.val = val === undefined ? 0 : val;
-                this.next = next === undefined ? null : next;
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      function ListNode(val, next) {
+        this.val = val === undefined ? 0 : val;
+        this.next = next === undefined ? null : next;
+      }
+      function TreeNode(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+    </script>
+    <script>
+      var rob = function (nums) {
+        // 动态规划
+        return dp(nums);
+
+        // 辅助方法-dp
+        function dp(nums) {
+          // f(i) = max(f(i-1), f(i-2) + nums[i])
+          // 需要一个变量来标记当前是否是取相邻房屋
+          // 把第一个和最后一个分别置为0来计算, 取最大值
+          return Math.max(inner(nums, 0), inner(nums, nums.length - 1));
+
+          // 辅助方法
+          function inner(nums, i) {
+            let tmp = nums[i];
+            nums[i] = 0;
+            // 状态值
+            let p_1 = 0;
+            let p_2 = 0;
+            let p_3 = 0;
+            for (let i = 0; i < nums.length; i++) {
+              p_1 = p_2;
+              p_2 = p_3;
+              p_3 = Math.max(p_2, p_1 + nums[i]);
             }
-            function TreeNode(val, left, right) {
-                this.val = val === undefined ? 0 : val;
-                this.left = left === undefined ? null : left;
-                this.right = right === undefined ? null : right;
-            }
-        </script>
-        <script>
-            var levels = function (root) {
-                let ans = [];
-                let level = -1;
-                let nodes = [root];
-                while (nodes.length) {
-                    // 层
-                    if (!ans[++level]) {
-                        ans[level] = [];
-                    }
-                    // 节点数
-                    let size = nodes.length;
-                    // 遍历层
-                    for (let i = 0; i < size; i++) {
-                        let node = nodes.shift();
-                        ans[level].push(node.val);
-                        if (node.left) nodes.push(node.left);
-                        if (node.right) nodes.push(node.right);
-                    }
-                }
-                return ans;
-            };
-        </script>
-        <script>
-            let l1 = new ListNode(9, new ListNode(9, new ListNode(9)));
-            let l2 = new ListNode(9);
-            let t1 = new TreeNode(
-                1,
-                new TreeNode(2, null, new TreeNode(5)),
-                new TreeNode(3, new TreeNode(4))
-            );
-        </script>
-        <script>
-            console.log(levels(t1));
-        </script>
-    </body>
+            nums[i] = tmp;
+            return p_3;
+          }
+        }
+      };
+    </script>
+    <script>
+      let l1 = new ListNode(9, new ListNode(9, new ListNode(9)));
+      let l2 = new ListNode(9);
+      let t1 = new TreeNode(
+        1,
+        new TreeNode(2, null, new TreeNode(5)),
+        new TreeNode(3, new TreeNode(4))
+      );
+    </script>
+    <script>
+      console.log(rob([0]));
+      console.log(rob([1, 2]));
+      console.log(rob([2, 3, 2]));
+      console.log(rob([1, 2, 3, 1]));
+      console.log(rob([1, 2, 1, 1]));
+      console.log(rob([200, 3, 140, 20, 10]));
+    </script>
+  </body>
 </html>
