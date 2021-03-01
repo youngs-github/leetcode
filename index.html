@@ -1,71 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-    <body>
-        <script>
-            function ListNode(val, next) {
-                this.val = val === undefined ? 0 : val;
-                this.next = next === undefined ? null : next;
-            }
-            function TreeNode(val, left, right) {
-                this.val = val === undefined ? 0 : val;
-                this.left = left === undefined ? null : left;
-                this.right = right === undefined ? null : right;
-            }
-        </script>
-        <script>
-            var trap = function (height) {
-                // 暴力法
-                return tp(height);
+  <body>
+    <script>
+      function ListNode(val, next) {
+        this.val = val === undefined ? 0 : val;
+        this.next = next === undefined ? null : next;
+      }
+      function TreeNode(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+    </script>
+    <script>
+      var solveNQueens = function (n) {
+        // 回溯法
+        let ans = [];
+        let board = new Array(n).fill(0).map(() => new Array(n).fill('.'));
+        backtrack(ans, board, 0);
+        return ans;
 
-                // 辅助方法-双指针
-                function tp(height) {
-                    let ans = 0;
-                    let left = 0;
-                    let right = height.length - 1;
-                    let left_max = 0;
-                    let right_max = 0;
-                    // 循环
-                    while (left < right) {
-                        if (height[left] <= height[right]) {
-                            // 左侧板较短, 形成的桶中可以用作最短板
-                            if (height[left] < left_max) {
-                                // 当前板较短, 可以进行计算
-                                ans += left_max - height[left];
-                            } else {
-                                // 当前板更高, 替换左侧最高板
-                                left_max = height[left];
-                            }
-                            // 指针右移
-                            left++;
-                        } else {
-                            // 右侧板较短, 形成的桶中可以用作最短板
-                            if (height[right] < right_max) {
-                                // 当前板较短, 进行计算
-                                ans += right_max - height[right];
-                            } else {
-                                // 当前板更高, 替换右侧最高板
-                                right_max = height[right];
-                            }
-                            // 指针左移
-                            right--;
-                        }
-                    }
-                    return ans;
-                }
-            };
-        </script>
-        <script>
-            let l1 = new ListNode(9, new ListNode(9, new ListNode(9)));
-            let l2 = new ListNode(9);
-            let t1 = new TreeNode(
-                1,
-                new TreeNode(2, null, new TreeNode(5)),
-                new TreeNode(3, new TreeNode(4))
-            );
-        </script>
-        <script>
-            console.log(trap([4, 2, 0, 3, 2, 5]));
-            console.log(trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]));
-        </script>
-    </body>
+        // 辅助方法-回溯
+        function backtrack(ans, board, row) {
+          if (row === board.length) {
+            return ans.push(board.map((arr) => arr.join('')));
+          }
+          // 针对单行进行操作
+          for (let col = 0; col < board.length; col++) {
+            // 检测
+            if (isValid(board, row, col)) {
+              // 在[i,j]位置放上
+              board[row][col] = 'Q';
+              backtrack(ans, board, row + 1);
+              board[row][col] = '.';
+            }
+          }
+        }
+        // 辅助方法-验证位置
+        function isValid(board, row, col) {
+          // 当前按行走, 故不用验证行
+          // 验证列
+          for (let i = 0; i < row; i++) {
+            if (board[i][col] === 'Q') {
+              return false;
+            }
+          }
+          // 验证右上角
+          for (
+            let i = row - 1, j = col + 1;
+            i >= 0 && j < board.length;
+            i--, j++
+          ) {
+            if (board[i][j] === 'Q') {
+              return false;
+            }
+          }
+          // 验证左上角
+          for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] === 'Q') {
+              return false;
+            }
+          }
+          return true;
+        }
+      };
+    </script>
+    <script>
+      let l1 = new ListNode(9, new ListNode(9, new ListNode(9)));
+      let l2 = new ListNode(9);
+      let t1 = new TreeNode(
+        1,
+        new TreeNode(2, null, new TreeNode(5)),
+        new TreeNode(3, new TreeNode(4))
+      );
+    </script>
+    <script>
+      // console.log(solveNQueens(1));
+      // console.log(solveNQueens(2));
+      // console.log(solveNQueens(3));
+      console.log(solveNQueens(4));
+      // console.log(solveNQueens(5));
+      // console.log(solveNQueens(6));
+      // console.log(solveNQueens(7));
+      console.log(solveNQueens(8));
+      // console.log(solveNQueens(9));
+    </script>
+  </body>
 </html>
