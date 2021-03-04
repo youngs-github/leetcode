@@ -7,7 +7,7 @@
     {
       "type": "node-terminal",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "调试jest",
       "skipFiles": ["<node_internals>/**"],
       "command": "yarn run jest"
     }
