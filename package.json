@@ -1,0 +1,14 @@
+{
+  "name": "06-leetcode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/youngs-github/leetcode.git",
+  "author": "yangqingcheng <yangqingcheng@kedacom.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jest": "^26.6.3"
+  },
+  "scripts": {
+    "jest": "jest"
+  }
+}
