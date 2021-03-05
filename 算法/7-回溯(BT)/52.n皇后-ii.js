@@ -54,7 +54,7 @@ var totalNQueens = function (n) {
 
 // test
 if (describe) {
-    describe('52.n皇后-ii.spec.js', () => {
+    describe('52.n皇后-ii.js', () => {
         it('示例01', () => {
             let ans = totalNQueens(1);
             expect(ans).toBe(1);

@@ -92,7 +92,7 @@ var searchMatrix = function (matrix, target) {
 
 // test
 if (describe) {
-  describe('240.搜索二维矩阵-ii.spec.js', () => {
+  describe('240.搜索二维矩阵-ii.js', () => {
     it('示例01', () => {
       let ans = searchMatrix(
         [

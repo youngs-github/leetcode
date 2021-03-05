@@ -52,7 +52,7 @@ var isInterleave = function (s1, s2, s3) {
 
 // @test
 if (describe) {
-    describe('97.交错字符串.spec.js', () => {
+    describe('97.交错字符串.js', () => {
         it('示例01', () => {
             let ans = isInterleave('', '', '');
             expect(ans).toBe(true);
