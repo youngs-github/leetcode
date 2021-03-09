@@ -10,9 +10,27 @@
  * @return {number}
  */
 var longestConsecutive = function (nums) {
+    // 借助hashmap
+    return hm(nums);
     // 借助基数排序
-    return sort(nums);
+    // return sort(nums);
 
+    // 辅助方法-hashmap
+    function hm(nums) {
+        let ans = 0;
+        let set = new Set(nums);
+        set.forEach((n) => {
+            // 如果n有前置n-1, 则不访问n, 因为n-1已经访问过
+            if (!set.has(n - 1)) {
+                let c = 1;
+                while (set.has(++n)) {
+                    c++;
+                }
+                ans = Math.max(ans, c);
+            }
+        });
+        return ans;
+    }
     // 辅助方法-基数排序
     function sort(nums) {
         // 遍历, 取出最大最小长度
@@ -64,30 +82,30 @@ var longestConsecutive = function (nums) {
 // @test
 if (describe) {
     describe('128.最长连续序列.js', () => {
-        // it('示例01', () => {
-        //     let ans = longestConsecutive([]);
-        //     expect(ans).toBe(0);
-        // });
-        // it('示例02', () => {
-        //     let ans = longestConsecutive([1]);
-        //     expect(ans).toBe(1);
-        // });
-        // it('示例03', () => {
-        //     let ans = longestConsecutive([100, 4, 200, 1, 3, 2]);
-        //     expect(ans).toBe(4);
-        // });
-        // it('示例04', () => {
-        //     let ans = longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]);
-        //     expect(ans).toBe(9);
-        // });
-        // it('示例05', () => {
-        //     let ans = longestConsecutive([0, -1]);
-        //     expect(ans).toBe(2);
-        // });
-        // it('示例06', () => {
-        //     let ans = longestConsecutive([0, -1, 1, 2, -3, -2]);
-        //     expect(ans).toBe(6);
-        // });
+        it('示例01', () => {
+            let ans = longestConsecutive([]);
+            expect(ans).toBe(0);
+        });
+        it('示例02', () => {
+            let ans = longestConsecutive([1]);
+            expect(ans).toBe(1);
+        });
+        it('示例03', () => {
+            let ans = longestConsecutive([100, 4, 200, 1, 3, 2]);
+            expect(ans).toBe(4);
+        });
+        it('示例04', () => {
+            let ans = longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]);
+            expect(ans).toBe(9);
+        });
+        it('示例05', () => {
+            let ans = longestConsecutive([0, -1]);
+            expect(ans).toBe(2);
+        });
+        it('示例06', () => {
+            let ans = longestConsecutive([0, -1, 1, 2, -3, -2]);
+            expect(ans).toBe(6);
+        });
         it('示例07', () => {
             let ans = longestConsecutive([1, 2, 0, 1]);
             expect(ans).toBe(3);
