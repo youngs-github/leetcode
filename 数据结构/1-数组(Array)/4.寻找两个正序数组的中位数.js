@@ -11,21 +11,40 @@
  * @return {number}
  */
 var findMedianSortedArrays = function (nums1, nums2) {
-    // O(lgM+N)较难实现, 使用O(M+N)
+    // 使用O(M+N)实现
+    // 如果当前为偶数个, 取i及i+1
+    // 如果当前为奇数个, 取i即可
+    let ans = 0;
+    let lens = nums1.length + nums2.length;
+    // 结果个数
+    let nums = lens & 1 ? 1 : 2;
+    // 中位数位置
+    let mids = lens & 1 ? (lens + 1) / 2 : lens / 2;
     let i = 0;
     let j = 0;
-    let k = 0;
-    let len = Math.floor((nums1.length + nums2.length) / 2);
-    while (k <= len) {
-        if (nums1[i] <= nums2[j]) {
+    let k = nums;
+    while (true) {
+        // 判断先取谁
+        if ((i < nums1.length && nums1[i] <= nums2[j]) || j >= nums2.length) {
+            // nums1有剩余且小于nums2
+            // nums2没有剩余
+            if (--mids <= 0) {
+                // 取结果
+                ans += nums1[i];
+                if (--k <= 0) break;
+            }
             i++;
-            if (++k >= len) return nums1[i];
         } else {
+            // nums2有剩余且小于nums1
+            if (--mids <= 0) {
+                // 取结果
+                ans += nums2[j];
+                if (--k <= 0) break;
+            }
             j++;
-            if (++k >= len) return nums1[i];
         }
     }
-    return 0;
+    return ans / nums;
 };
 // @lc code=end
 
@@ -51,6 +70,10 @@ if (describe) {
         it('示例05', () => {
             let ans = findMedianSortedArrays([0, 0], [0, 0]);
             expect(ans).toBe(0);
+        });
+        it('示例06', () => {
+            let ans = findMedianSortedArrays([3, 4], []);
+            expect(ans).toBe(3.5);
         });
     });
 }

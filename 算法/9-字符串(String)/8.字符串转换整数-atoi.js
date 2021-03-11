@@ -10,50 +10,66 @@
  * @return {number}
  */
 var myAtoi = function (s) {
-  if (!s) return 0;
-  // 1、忽略前面的空格
-  // 2、读取正负号(可能不存在)
-  // 3、读取有效数字(无效即丢弃, 可能有前置0, 必须是整数)
-  // 4、范围判断(设定最大最小值)
-  let syms = [];
-  let nums = [];
-  // 循环
-  let i = 0;
-  // 读取空格
-  while (i < s.length && s[i] === ' ') {
-    i++;
-  }
-  // 读取符号
-  while (i < s.length && (s[i] === '+' || s[i] === '-')) {
-    if (syms.length > 0) {
-      // 多个符号
-      return 0;
+    // 去空格
+    s = s.trim();
+    if (!s) return 0;
+    // 1、判断初始位是否有效
+    // 2、从有效数字位开始计算, 每一步判断是否越界
+    if (!isNum(s, 0) && !isSym(s, 0)) return 0;
+    let ans = 0;
+    // 起点位置
+    let i = isSym(s, 0) ? 1 : 0;
+    // 符合正负
+    let sym = s[0] === '-';
+    // 边界范围
+    let max = 2 ** 31 - 1;
+    let min = -(2 ** 31);
+    // 顺序遍历
+    while (i < s.length && isNum(s, i)) {
+        ans = ans * 10 + +s[i];
+        if ((sym ? -ans : ans) > max) return max;
+        if ((sym ? -ans : ans) < min) return min;
+        i++;
     }
-    syms.push(s[i++]);
-  }
-  // 读取数字
-  while (i < s.length) {
-    if (s[i] >= '0' && s[i] <= '9') {
-      // 有效数字
-      nums.push(s[i++]);
-    } else if (nums.length === 0) {
-      // 无效字符
-      return 0;
-    } else {
-      break;
+    return sym ? -ans : ans;
+
+    // 辅助方法-是否数字
+    function isNum(s, i) {
+        return s[i] >= '0' && s[i] <= '9';
     }
-  }
-  // 符号判断
-  if (syms.length > 1) return 0;
-  // 组织结构
-  // 数字处理(可选用乘法)
-  let ans = 0;
-  let mul = 1;
-  for (let i = nums.length - 1; i >= 0; i--, mul *= 10) {
-    ans += nums[i] * mul;
-  }
-  return syms[0] === '+' || !syms[0]
-    ? Math.min(ans, 2 ** 31 - 1)
-    : Math.max(-ans, -(2 ** 31));
+    // 辅助方法-是否符合
+    function isSym(s, i) {
+        return s[i] === '-' || s[i] === '+';
+    }
 };
 // @lc code=end
+
+// @test
+if (describe) {
+    describe('8.字符串转换整数-atoi.js', () => {
+        it('示例01', () => {
+            let ans = myAtoi('');
+            expect(ans).toBe(0);
+        });
+        it('示例02', () => {
+            let ans = myAtoi('42');
+            expect(ans).toBe(42);
+        });
+        it('示例03', () => {
+            let ans = myAtoi('   -42');
+            expect(ans).toBe(-42);
+        });
+        it('示例04', () => {
+            let ans = myAtoi('4193 with words');
+            expect(ans).toBe(4193);
+        });
+        it('示例05', () => {
+            let ans = myAtoi('words and 987');
+            expect(ans).toBe(0);
+        });
+        it('示例06', () => {
+            let ans = myAtoi('-91283472332');
+            expect(ans).toBe(-2147483648);
+        });
+    });
+}
