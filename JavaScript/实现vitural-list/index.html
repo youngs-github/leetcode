@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>超长虚拟列表</title>
+        <style>
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            #root {
+                width: 100%;
+                height: 100%;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+            #root .item {
+                height: 36px;
+                text-align: center;
+                line-height: 36px;
+            }
+            div::webkit-scrollbar {
+                color: #ff0000;
+				width: 10px;
+                background: #ff0000;
+            }
+            div::-webkit-scrollbar-track {
+                color: #ff0000;
+				width: 10px;
+                background: #ff0000;
+            }
+            div::-webkit-scrollbar-thumb {
+                color: #ff0000;
+				width: 10px;
+                background: #ff0000;
+            }
+            div::-webkit-scrollbar-track-piece {
+                color: #ff0000;
+				width: 10px;
+                background: #ff0000;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="height: 100%;">
+			<div id="root"></div>
+		</div>
+        <script src="./data.js"></script>
+        <script src="./vitural-list.js"></script>
+        <script>
+            // 加载长列表
+            const root = document.getElementById('root');
+            const items = [];
+            for (let i = 0; i < list.length; i++) {
+                const item = document.createElement('div');
+                item.textContent = list[i].name;
+                item.classList.add('item');
+                items.push(item);
+            }
+            root.append(...items);
+        </script>
+    </body>
+</html>
