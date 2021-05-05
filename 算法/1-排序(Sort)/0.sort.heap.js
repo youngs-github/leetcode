@@ -1,56 +1,68 @@
 /**
- * 简单编写堆排序算法
- *
- * 理论基于完全二叉树
- * 先建立大顶堆或者小顶堆
- * 从下往上，从左往右进行排序
- * n个元素组成的完全二叉树，最大非叶子节点的数组下标表示为：n/2 - 1
- * 每个非叶子节点的左右子节点数组下标分别为：2*i 及 2*i + 1
+ * 堆排序算法
+ * 原理：基于完全二叉树结构（任意节点的值不小于其左右孩子的值：2n+1、2n+2, 下标从0开始）
+ * 时间复杂度：O(n*lgn)
+ * 空间复杂度：O(1)
  */
-
-// 原始数组
-const array = new Array(20).fill(0).map(() => {
-  return Math.round(Math.random() * 10000);
-});
-
-// 调整堆结构
-function adjuestHeap(arr, i, len) {
-  // 目标元素
-  let temp = arr[i];
-  // 从i节点的左子节点开始（2*i + 1）
-  for (let k = i * 2 + 1; k < len; k = k * 2 + 1) {
-    // 如果左子节点小于又子节点，满足排序，下一个
-    if (k + 1 < len && arr[k] < arr[k + 1]) {
-      k++;
-    }
-    // 如果子节点数据大于父节点，则进行交换
-    if (arr[k] > temp) {
-      arr[i] = arr[k];
-      i = k;
-    } else {
-      break;
-    }
-  }
-  // 将调整后的节点值保存
-  arr[i] = temp;
-}
-
-// 排序方法
 function heapSort(arr) {
-  // 从最后一个非叶子节点开始， 建立大顶堆
-  for (let i = ((arr.length / 2) >> 0) - 1; i >= 0; i--) {
-    adjuestHeap(arr, i, arr.length);
+  // 先建立堆
+  buildHeap(arr);
+  // 逐个替换调整
+  for (let i = arr.length - 1; i > 0; i--) {
+    // 交换头和尾
+    [arr[0], arr[i]] = [arr[i], arr[0]];
+    // 调整堆结构
+    adjustHeap(arr, 0, i);
   }
-  // 调整堆结构
-  for (let j = arr.length - 1; j > 0; j--) {
-    // 将堆顶元素与末尾元素交换
-    [arr[0], arr[j]] = [arr[j], arr[0]];
-    // 重新调整堆结构
-    adjuestHeap(arr, 0, j);
+  return arr;
+
+  // 辅助方法-构建堆
+  function buildHeap(arr) {
+    // 构建堆过程只能确定堆顶元素, 并不能确定其他元素序列
+    for (let i = ((arr.length / 2) >> 0) - 1; i >= 0; i--) {
+      adjustHeap(arr, i, arr.length);
+    }
+  }
+  // 辅助方法-调整堆
+  function adjustHeap(arr, parent, len) {
+    let tmp = arr[parent];
+    // 遍历子孙元素
+    for (let i = parent * 2 + 1; i < len; i = i * 2 + 1) {
+      // 寻找子节点中的较大者
+      if (i + 1 < len && arr[i] < arr[i + 1]) {
+        i++;
+      }
+      // 如果子节点值比父节点大, 则交换, 并进行下一轮遍历
+      if (arr[i] > tmp) {
+        arr[parent] = arr[i];
+        // i即为下一轮遍历的父节点
+        parent = i;
+      } else {
+        break;
+      }
+    }
+    // 保存调整后的值
+    arr[parent] = tmp;
   }
 }
 
-// 排序
-heapSort(array);
-
-console.error(array);
+// @test
+if (describe) {
+  describe('堆排序', () => {
+    it('示例-01', () => {
+      const arr = [1, 2, 3];
+      const ans = heapSort([...arr]);
+      expect(ans.join()).toBe(arr.sort((a, b) => a - b).join());
+    });
+    it('示例-02', () => {
+      const arr = [2, 1, 3, 6, 4];
+      const ans = heapSort([...arr]);
+      expect(ans.join()).toBe(arr.sort((a, b) => a - b).join());
+    });
+    it('示例-03', () => {
+      const arr = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+      const ans = heapSort([...arr]);
+      expect(ans.join()).toBe(arr.sort((a, b) => a - b).join());
+    });
+  });
+}
