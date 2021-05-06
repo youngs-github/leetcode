@@ -21,13 +21,15 @@ var maxProfit = function (prices) {
     // f(1) = 0
     // f(2) = max(prices[1]-prices[0], 0)
     // 状态方程：f(i) = max(f(i-1), prices[i]-minprice)
-    let dps = [0];
-    let mps = prices[0];
+    // 动态规划
+    // 因为只需要关联f(i-1), 所以不需要整个数组
+    let dps = 0;
+    let min = prices[0];
     for (let i = 1; i < prices.length; i++) {
-      mps = Math.min(mps, prices[i]);
-      dps[i] = Math.max(dps[i - 1], prices[i] - mps);
+      min = Math.min(min, prices[i]);
+      dps = Math.max(dps, prices[i] - min);
     }
-    return dps[prices.length - 1];
+    return dps;
   }
   // 辅助方法-vi-超时
   function vi(prices) {

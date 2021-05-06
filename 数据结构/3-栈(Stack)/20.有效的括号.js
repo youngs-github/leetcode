@@ -10,32 +10,22 @@
  * @return {boolean}
  */
 var isValid = function (s) {
-  // 长度为偶数时, 必定不成对
-  // 遍历时, 若为左括号, 则入栈
-  // 遍历时, 若为右括号, 则判断是否闭合, 不能闭合返回false
-  // 遍历完判断栈是否为空
-  if (s.length % 2 === 1) return false;
-  // 缓存基础配对
-  let map = {
+  // hash
+  const hash = {
     ')': '(',
     '}': '{',
     ']': '['
   };
-  // 栈
-  let stack = [];
-  // 遍历
+  // stack
+  const stack = [];
   for (let i = 0; i < s.length; i++) {
-    if (map[s[i]]) {
-      // 右括号, 需要闭合
-      if (stack[stack.length - 1] === map[s[i]]) {
-        // 闭合成功, 出栈
-        stack.pop();
-      } else {
-        // 闭合失败, 不符合
+    if (hash[s[i]]) {
+      // 遇到右括号, 判断是否匹配
+      if (stack.pop() !== hash[s[i]]) {
         return false;
       }
     } else {
-      // 左括号, 入栈
+      // 遇到左括号, 入栈
       stack.push(s[i]);
     }
   }
