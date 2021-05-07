@@ -11,24 +11,21 @@
  */
 var generateParenthesis = function (n) {
   let ans = [];
-  backtrack(ans, n, 0, 0, []);
+  backtrack(ans, n, 0, 0, '');
   return ans;
 
   // 回溯
   function backtrack(ans, n, left, right, stack) {
-    if (left > n || right > n || left < right) return;
     if (left === n && right === n) {
       // 该结束了
-      return ans.push(stack.join(''));
+      return ans.push(stack);
     }
-    stack.push('(');
-    backtrack(ans, n, left + 1, right, stack);
-    stack.pop();
+    if (left < n) {
+      backtrack(ans, n, left + 1, right, stack + '(');
+    }
     // 右括号
-    if (left > 0) {
-      stack.push(')');
-      backtrack(ans, n, left, right + 1, stack);
-      stack.pop();
+    if (left <= n && left > right) {
+      backtrack(ans, n, left, right + 1, stack + ')');
     }
   }
 };
